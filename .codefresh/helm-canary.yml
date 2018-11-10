@@ -16,6 +16,7 @@ steps:
       - cf_export HOST="${{CF_BRANCH_TAG_NORMALIZED}}.${{CF_REPO_NAME}}.$TLD"
       - cf_export NAMESPACE="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_REPO_NAME}}"
       - cf_export KUBE_CONTEXT="istio-test@otters-cc"
+      - cf_export NAMESPACE="foobar"
   SeeThemVars:
     description: Freestyle step..
     title: Free stylin them var
