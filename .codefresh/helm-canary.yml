@@ -1,5 +1,27 @@
 version: '1.0'
 steps:
+
+  SetVars:
+    description: Freestyle step..
+    title: Free styling
+    environment:
+      - GOOGLE_PROJECT=otters-cc
+      - TLD=otterly.cc
+    image: alpine:latest
+    commands:
+      - env
+      - cf_export GOOGLE_PROJECT
+      - cf_export TLD
+      - cf_export BUILD_IMAGE="gcr.io/$GOOGLE_PROJECT/${{CF_REPO_NAME}}:${{CF_SHORT_REVISION}}"
+      - cf_export HOST="${{CF_BRANCH_TAG_NORMALIZED}}.${{CF_REPO_NAME}}.$TLD"
+      - cf_export NAMESPACE="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_REPO_NAME}}"
+  SeeThemVars:
+    description: Freestyle step..
+    title: Free stylin them var
+    image: alpine:latest
+    commands:
+      - env
+
   BuildingDockerImage:
     title: Building Docker Image
     type: build
@@ -7,6 +29,25 @@ steps:
     working_directory: ./
     tag: '${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}'
     dockerfile: Dockerfile
+
+#  BuildingDockerImage:
+#    title: Building Docker Image
+#    type: build
+#    image_name: '${{CF_REPO_NAME}}'
+#    working_directory: ./
+#    tag: '${{CF_SHORT_REVISION}}'
+#    dockerfile: Dockerfile
+    
+  PushToGCR:
+    type: push
+    title: Pushing Docker image to GCR
+    candidate: '${{BuildingDockerImage}}'
+    tag: '${{CF_SHORT_REVISION}}'
+    image_name: '${{CF_REPO_NAME}}'
+    registry: gcr-io
+    fail_fast: false
+
+
   IstioInfo:
     title: Gather istio information
     image: containers101/k8sclitoolset
@@ -17,6 +58,8 @@ steps:
     - cf_export prodImage=$(kubectl get service -l status=prod -n ${{NAMESPACE}} -o=jsonpath='{$.items[0].metadata.labels.version}')
     - cf_export canaryVersion=${{RELEASE}}-${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
     - cf_export canaryImage=${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}
+
+
   DeployHelm:
     title: Prod with Canary Helm Release
     image: containers101/k8sclitoolset
