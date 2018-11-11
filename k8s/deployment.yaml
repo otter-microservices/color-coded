@@ -2,9 +2,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: foo
+  name: {{CF_SHORT_REVISION}}
   labels:
-    app: {{CF_REPO_NAME}}
+    app: {{CF_SHORT_REVISION}}
 spec:
   replicas: 1
   revisionHistoryLimit: 5
@@ -12,7 +12,7 @@ spec:
     metadata:
       name: {{CF_REPO_NAME}}
       labels:
-        app: {{NEW_PROD_SERVICE}}
+        app: {{CF_SHORT_REVISION}}
         tier: web
     spec:
 #      affinity:
