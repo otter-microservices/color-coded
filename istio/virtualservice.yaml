@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  creationTimestamp: null
+  name: colors
+  namespace: foobar
+#  resourceVersion: "973245"
+spec:
+  gateways:
+  - colors
+  hosts:
+  - colors.demo4591.codefresh.io
+  http:
+  - route:
+    - destination:
+        host: colors-color
+        port:
+          number: 80
+      weight: 20
+    - destination:
+        host: donating-pug-color
+        port:
+          number: 80
+      weight: 80
+---
+
