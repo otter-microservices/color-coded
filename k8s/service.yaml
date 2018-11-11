@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{CF_REPO_NAME}}
   labels:
-    app: {{CURRENT_PROD_SERVICE}}
+    app: {{NEW_PROD_SERVICE}}
 spec:
   type: NodePort
   ports:
@@ -13,6 +13,6 @@ spec:
     protocol: TCP
     targetPort: 8080
   selector:
-    app: {{CURRENT_PROD_SERVICE}}
+    app: {{NEW_PROD_SERVICE}}
     tier: web
 
