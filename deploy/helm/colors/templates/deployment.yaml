@@ -22,7 +22,8 @@ spec:
       {{- end }}
       containers:
       - name: {{$local.Release.Name}}-{{$track.image.version}}
-        image: "{{ $track.image.repository }}:{{ $track.image.tag }}"
+        # image: "{{ $track.image.repository }}:{{ $track.image.tag }}"
+        image: "{{ $track.image.repository }}"
         imagePullPolicy: {{ $local.Values.image.pullPolicy }}
         ports:
         - containerPort: {{ $local.Values.service.internalPort }}
