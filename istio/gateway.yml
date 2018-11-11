@@ -1,10 +1,9 @@
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  creationTimestamp: null
   name: colors
-  namespace: canary
-#  resourceVersion: "562037"
+  namespace: foobar
 spec:
   selector:
     istio: ingressgateway
@@ -15,10 +14,3 @@ spec:
       name: http
       number: 80
       protocol: HTTP
-    - canary.demo4591.codefresh.io
-    port:
-      name: http
-      number: 80
-      protocol: HTTP
----
-

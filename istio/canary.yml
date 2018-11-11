@@ -4,7 +4,10 @@ metadata:
   name: colors
 spec:
   hosts:
-  - "colors.demo4591.codefresh.io"
+  - colors.demo4591.codefresh.io
   gateways:
   - colors
   http:
+    route:
+    - destination:
+        host: reviews.prod.svc.cluster.local
