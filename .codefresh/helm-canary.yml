@@ -71,18 +71,17 @@ steps:
 #    - if [ "${{prodVersion}}" = "${{canaryVersion}}" ]; then echo "Prod version is the same as canary, nothing to do. Exiting"; exit 1; fi
 #    - helm upgrade --install ${{RELEASE}} deploy/helm/colors --namespace=${{NAMESPACE}} --debug --set deployment[0].track=release --set deployment[0].image.repository=${{BUILD_IMAGE}} --set deployment[0].image.tag="${{prodImage}}" --set deployment[0].image.version="${{prodImage}}" --set deployment[0].image.pullSecret=codefresh-generated-r.cfcr.io-cfcr-canary --set deployment[1].track=canary --set deployment[1].image.repository=${{BUILD_IMAGE}} --set deployment[1].image.tag='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}' --set deployment[1].image.version="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}" --set deployment[1].image.pullSecret=codefresh-generated-r.cfcr.io-cfcr-canary
     - >
-      helm upgrade /
-      --install ${{RELEASE}} deploy/helm/colors /
-      --namespace=${{NAMESPACE}} /
-      --debug /
-      --set deployment[0].track=release /
-      --set deployment[0].image.repository=${{BUILD_IMAGE}} /
-      --set deployment[0].image.tag="${{prodImage}}" /
-      --set deployment[0].image.version="${{prodImage}}" /
-      --set deployment[0].image.pullSecret=codefresh-generated-r.cfcr.io-cfcr-canary /
-      --set deployment[1].track=canary /
-      --set deployment[1].image.repository=${{BUILD_IMAGE}} /
-      --set deployment[1].image.tag='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}' /
+      helm upgrade \
+      --install ${{RELEASE}} deploy/helm/colors \
+      --namespace=${{NAMESPACE}} \
+      --debug \
+      --set deployment[0].track=release \
+      --set deployment[0].image.repository=${{BUILD_IMAGE}} \
+      --set deployment[0].image.tag="${{prodImage}}" \
+      --set deployment[0].image.version="${{prodImage}}" \
+      --set deployment[1].track=canary \
+      --set deployment[1].image.repository=${{BUILD_IMAGE}} \
+      --set deployment[1].image.tag='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}' \
       --set deployment[1].image.version="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}"
 
   StartCanary:
@@ -91,12 +90,21 @@ steps:
     commands:
       - kubectl config use-context ${{KUBE_CONTEXT}}
       - bash -e istio/rollout.sh ${{CF_VOLUME_PATH}}/ ${{prodVersion}} ${{canaryVersion}} 35 ${{CF_KUBECONFIG_PATH}} ${{NAMESPACE}}
+
   ReleaseProd:
     title: Do Final Helm Release
     image: containers101/k8sclitoolset
     commands:
     - kubectl config use-context ${{KUBE_CONTEXT}}
     - echo "New Prod is ${{canaryVersion}}, doing final Helm release"
-    - helm upgrade --install ${{RELEASE}} deploy/helm/colors --namespace=${{NAMESPACE}} --debug --set deployment[0].track=canary --set deployment[0].image.repository=r.cfcr.io/todaywasawesome/todaywasawesome/colorcoded --set deployment[0].image.tag='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}' --set deployment[0].image.version="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}" --set deployment[0].image.pullSecret=codefresh-generated-r.cfcr.io-cfcr-canary
+    - >
+      helm upgrade /
+      --install ${{RELEASE}} deploy/helm/colors /
+      --namespace=${{NAMESPACE}} /
+      --debug /
+      --set deployment[0].track=canary /
+      --set deployment[0].image.repository=${{BUILD_IMAGE}} /
+      --set deployment[0].image.tag='${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}' /
+      --set deployment[0].image.version="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_SHORT_REVISION}}" /
     - echo "Marking new release as prod"
     - kubectl label svc ${{canaryVersion}} status=prod -n ${{NAMESPACE}}
