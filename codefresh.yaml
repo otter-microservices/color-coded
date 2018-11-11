@@ -13,7 +13,7 @@ steps:
       - cf_export TLD
       - cf_export BUILD_IMAGE="gcr.io/$GOOGLE_PROJECT/${{CF_REPO_NAME}}:${{CF_SHORT_REVISION}}"
       - cf_export HOST="${{CF_BRANCH_TAG_NORMALIZED}}.${{CF_REPO_NAME}}.$TLD"
-      - cf_export NAMESPACE="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_REPO_NAME}}"
+      - cf_export NAMESPACE=foobar
       - cf_export KUBE_CONTEXT="istio-test@otters-cc"
       - cf_export CURRENT_PROD_SERVICE=$(kubectl get service -l status=prod -n foobar -o=jsonpath='{$.items[0].metadata.name}') 
       - cf_export NEW_PROD_SERVICE="${{CF_SHORT_REVISION}}"
@@ -116,7 +116,7 @@ steps:
     kind: kubernetes
     cluster: istio-test@otters-cc
     namespace: ${{NAMESPACE}}
-    file_path: ./istio/virtualservice.yaml
+    file_path: ./istio/virtualservice-testing.yaml
 
 #  RunningIngressScript:
 #    title: Running Ingress
