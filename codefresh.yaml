@@ -111,7 +111,7 @@ steps:
     file_path: ./k8s/service.yaml
 
   RunningCanary50:
-    title: Running Service
+    title: Running Istio Canary
     type: deploy
     kind: kubernetes
     cluster: istio-test@otters-cc
