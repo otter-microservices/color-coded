@@ -18,7 +18,7 @@ spec:
           number: 80
       weight: 20
     - destination:
-        host: donating-pug-color
+        host: {{ NEW_PROD_SERVICE }}
         port:
           number: 80
       weight: 80
