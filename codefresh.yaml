@@ -16,7 +16,7 @@ steps:
       - cf_export NAMESPACE="${{CF_BRANCH_TAG_NORMALIZED}}-${{CF_REPO_NAME}}"
       - cf_export KUBE_CONTEXT="istio-test@otters-cc"
       - cf_export CURRENT_PROD_SERVICE=$(kubectl get service -l status=prod -n foobar -o=jsonpath='{$.items[0].metadata.name}') 
-      - cf_export NEW_PROD_SERVICE=${{CF_SHORT_REVISION}}
+      - cf_export NEW_PROD_SERVICE="${{CF_SHORT_REVISION}}"
       - env
   SeeThemVars:
     description: Freestyle step..
