@@ -5,7 +5,8 @@ steps:
     title: 'Get pods from cluster integrated in Codefresh'
     image: codefresh/kube-helm:master
     commands:
-      - kubectl --kubeconfig=istio-test@otters-cc get namespaces
+      - kubectl config use-context istio-test@otters-cc
+      - kubectl get namespaces
 
   SetVars:
     description: Freestyle step..
