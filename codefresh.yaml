@@ -112,10 +112,10 @@ steps:
 
   GetPods:
     title: 'Apply Istio config'
-    image: codefresh/kube-helm:master
+    image: codefresh/cf-deploy-kubernetes:latest
     commands:
-      - kubectl config use-context istio-test@otters-cc
-      - kubectl apply -f ./istio/virtualservice-testing.yaml
+      - /usr/local/bin/kubectl1.6 config use-context istio-test@otters-cc
+      - /usr/local/bin/kubectl1.6 apply -f ./istio/virtualservice-testing.yaml
 
   RunningCanary50:
     title: Running Istio Canary
