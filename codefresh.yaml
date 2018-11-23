@@ -1,6 +1,13 @@
 version: '1.0'
 steps:
 
+  GetPods:
+    title: 'Get pods from cluster integrated in Codefresh'
+    image: codefresh/kube-helm:master
+    commands:
+      - kubectl config get-contexts
+      - kubectl get namespaces
+
   SetVars:
     description: Freestyle step..
     title: Free styling
@@ -9,7 +16,6 @@ steps:
       - TLD=otterly.org
     image: alpine:latest
     commands:
-      - kubectl get namespaces
       - cf_export GOOGLE_PROJECT
       - cf_export TLD
       - cf_export BUILD_IMAGE="gcr.io/$GOOGLE_PROJECT/${{CF_REPO_NAME}}:${{CF_SHORT_REVISION}}"
