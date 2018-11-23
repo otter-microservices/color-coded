@@ -1,13 +1,6 @@
 version: '1.0'
 steps:
 
-  GetPods:
-    title: 'Get pods from cluster integrated in Codefresh'
-    image: codefresh/kube-helm:master
-    commands:
-      - kubectl config use-context istio-test@otters-cc
-      - kubectl get namespaces
-
   SetVars:
     description: Freestyle step..
     title: Free styling
@@ -116,6 +109,13 @@ steps:
     cluster: istio-test@otters-cc
     namespace: ${{NAMESPACE}}
     file_path: ./k8s/service.yaml
+
+  GetPods:
+    title: 'Apply Istio config'
+    image: codefresh/kube-helm:master
+    commands:
+      - kubectl config use-context istio-test@otters-cc
+      - kubectl apply -f ./istio/virtualservice-testing.yaml
 
   RunningCanary50:
     title: Running Istio Canary
