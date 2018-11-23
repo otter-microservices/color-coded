@@ -9,6 +9,7 @@ steps:
       - TLD=otterly.org
     image: alpine:latest
     commands:
+      - kubectl get namespaces
       - cf_export GOOGLE_PROJECT
       - cf_export TLD
       - cf_export BUILD_IMAGE="gcr.io/$GOOGLE_PROJECT/${{CF_REPO_NAME}}:${{CF_SHORT_REVISION}}"
