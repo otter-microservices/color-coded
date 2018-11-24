@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{CF_SHORT_REVISION}}
 spec:
-  replicas: 1
+  replicas: 6
   revisionHistoryLimit: 5
   template:
     metadata:
