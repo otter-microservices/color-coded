@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{CF_REPO_NAME}}
+  name: {{CF_REPO_NAME}}-{{NEW_PROD_SERVICE}}
   labels:
     app: {{NEW_PROD_SERVICE}}
 spec:
