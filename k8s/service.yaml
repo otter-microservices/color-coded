@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{NEW_PROD_SERVICE}}
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: http
     port: 80
